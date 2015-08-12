@@ -215,42 +215,42 @@ var SM = {
                         
                         Count++;
 						                 
-						                 if(Count>=2)
-						                 {
-						                     buttonUp.setVisibility(VISIBLE);
-						                     buttonDown.setVisibility(VISIBLE);
-						                     none1.setVisibility(VISIBLE);
-						                     none2.setVisibility(VISIBLE);
-						                     //window.update(MC.dp(20), MC.dp(60), MC.dp(40), MC.dp(40), false);
-						                 }
-						                 else
-						                     new java.lang.Thread(
-						                     {
-						                         run:function()
-						                         {
-						                             java.lang.Thread.sleep(250);
-						                             Count = 0;
-						                         }
-						                     }).start();
+				        if(Count>=2)
+						{
+	                        buttonUp.setVisibility(VISIBLE);
+	                        buttonDown.setVisibility(VISIBLE);
+						    none1.setVisibility(VISIBLE);
+							none2.setVisibility(VISIBLE);
+		                    //window.update(MC.dp(20), MC.dp(60), MC.dp(40), MC.dp(40), false);
+			            }
+						else
+                        new java.lang.Thread (
+						{
+		                    run : function ()
+				    		{
+					            java.lang.Thread.sleep(250);
+			                    Count = 0;
+		                    }
+						}).start();
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP)
                     {
                         view.setImageBitmap(null);
 						                 
-						                 buttonUp.setVisibility(GONE);
-						                 buttonDown.setVisibility(GONE);
-						                 none1.setVisibility(GONE);
-						                 none2.setVisibility(GONE);
+		                buttonUp.setVisibility(GONE);
+		                buttonDown.setVisibility(GONE);
+		                none1.setVisibility(GONE);
+		                none2.setVisibility(GONE);
                     }
                     return false;
                 }
             }));
             
             buttonUp.setVisibility(GONE);
-						     buttonDown.setVisibility(GONE);
-						     none1.setVisibility(GONE);
-						     none2.setVisibility(GONE);
-						     
+			buttonDown.setVisibility(GONE);
+		    none1.setVisibility(GONE);
+	        none2.setVisibility(GONE);
+					     
             layout.setOrientation(1);
             layout.setGravity(Gravity.CENTER|Gravity.CENTER);
             layout.addView(buttonUp, MC.dp(35), MC.dp(35));
@@ -332,7 +332,7 @@ var SM = {
             option.addSlot(MC.Bitmap.Option.NormalBitmap());
 			
             option.addText("게임");
-            option.addSwitch("스마트무빙 사용", "option.addSlot(MC.Bitmap.Option.NormalBitmap()");
+            option.addSwitch("스마트무빙 사용", "enable_sm", "SM.Mode.Run", "", "");
             
             option.addText("리페");
             option.addText("진짜");
@@ -446,7 +446,6 @@ var SM = {
     }
 };
 
-SM.init();
 //------------------------------------------------------------------------------
 
 var MC =
@@ -824,7 +823,7 @@ var MC =
 
         bt.setTextColor(Color.parseColor("#ffe1e1e1"));
         bt.setTextSize(16);
-        bt.setTypeface(font);
+        bt.setTypeface(MC.font);
         bt.setShadowLayer(1, MC.dp(2), MC.dp(2), Color.argb(255, 44, 44, 44));
 
         bt.setOnTouchListener (new OnTouchListener (
@@ -1099,7 +1098,7 @@ var MC =
             else
                 bool = false;
 					
-					eval(variation + "=" + bool + ";");
+			eval(variation + "=" + bool + ";");
 					
 			var switch_ = new MC.Switch(bool);
             switch_.setOnClickListener (new OnClickListener (
@@ -1163,14 +1162,18 @@ var MC =
         
         this.destroy = function ()
         {
-            option.dismiss();
-            option = null;
+			if (option != null)
+			{
+				option.dismiss();
+                option = null;
+			}
         };
         
-       this.init = function ()
+        this.init = function ()
         {
-            for (var i in keyCodeList)
-               eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
+			if (variationList != null)
+                for (var i in keyCodeList)
+                   eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
         };       
 	},
 	
@@ -1247,3 +1250,4 @@ var MC =
 };
 
 MC.init();
+SM.init();
