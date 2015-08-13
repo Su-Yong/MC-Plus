@@ -55,11 +55,32 @@ const BufferedImage = java.awt.image.BufferedImage;
  * 사용언어: Java script 「ModPE」
  * 작성자: PlanP, KD
  * 작성일: 2015. 08. 03
- * 최근 수정자: KD
+ * 최근 수정자: PlanP
  * 수정일: 2015. 08. 13
- * 수정사유: 코딩 컨벤션 수정
+ * 수정사유: 버그수정, 옵션로드관련수정, 멀티버튼수정
  * Mine Craft 유명 모드 「Smart Moving」의 ModPE 버전입니다.
  */
+ 
+ //World를 클릭하면 호출되는
+ //ModPE에서 기본 제공하는 콜백 메소드입니다.
+ function selectLevelHook ()
+ {
+	 MC.ctx.runOnUiThread (new java.lang.Runnable (
+    {
+        run : function ()
+        {
+            try
+            {
+		        if((SM.World++) == 0)
+					SM.init();
+            }
+            catch (e)
+            {
+                MC.errorAlert(e);
+            }
+        }
+    }));
+ }
  
 // World에 접속하였을때 호출되는
 // ModPE에서 기본 제공하는 콜벡 메서드입니다.
@@ -124,6 +145,8 @@ function leaveGame ()
 
 // Smart Moving의 구조체 입니다.
 var SM = {
+	World : 0,
+	
     Window :
     {
         MultiButton : null,
@@ -162,7 +185,7 @@ var SM = {
         SM.Object.JumpBar = SM.GUI.JumpBar();
             
         SM.Object.Option = SM.GUI.Option();
-        //오류남
+        
         SM.Object.Option.init();
     },
 
@@ -273,13 +296,13 @@ var SM = {
 						{
 							var m_coordY = event.getRawY();
 							
-							if ((MC.HEIGHT - MC.dp(60)) < m_coordY)
+							if ((MC.HEIGHT - MC.dp(55)) < m_coordY)
 							{
 								SM.Button.Multi.Normal = false;
 								SM.Button.Multi.Up = false;
 								SM.Button.Multi.Down = true;
 							}
-							else if ((MC.HEIGHT - MC.dp(100)) > m_coordY)
+							else if ((MC.HEIGHT - MC.dp(105)) > m_coordY)
 							{
 								SM.Button.Multi.Normal = false;
 								SM.Button.Multi.Up = true;
@@ -322,14 +345,14 @@ var SM = {
 			layout.setOrientation(1);
             layout.setGravity(Gravity.CENTER | Gravity.CENTER);  
 			
-			layout.addView(m_ml1, MC.dp(40), MC.dp(40));
+			layout.addView(m_ml1, MC.dp(40), MC.dp(50));
             layout.addView(button, MC.dp(40), MC.dp(40));
-            layout.addView(m_ml2, MC.dp(40), MC.dp(40));
+            layout.addView(m_ml2, MC.dp(40), MC.dp(50));
             
             window.setContentView(layout);
             window.setBackgroundDrawable(null);
             window.setWidth(MC.dp(40));
-            window.setHeight(MC.dp(120));
+            window.setHeight(MC.dp(140));
             window.showAtLocation(MC.ctx.getWindow().getDecorView(),
                                   Gravity.RIGHT | Gravity.BOTTOM,
                                   MC.dp(20), MC.dp(20));
@@ -409,6 +432,8 @@ var SM = {
             
             option.end();
             
+			option.init();
+			
             return option;
         },
 
@@ -1321,4 +1346,3 @@ var MC =
 };
 
 MC.init();
-SM.init();
