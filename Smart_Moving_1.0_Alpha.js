@@ -1,12 +1,8 @@
 
 /*
-* Copyright 2015. PlanP, KD
-* All rights reserved.
-* ------------------------------------------------------------------------------
-* Smart_Moving_1.0_Alpha.js
-*/
-
-//Import
+ * Copyright 2015. PlanP, KD
+ * All rights reserved.
+ */
 
 const bl = net.zhuoweizhang.mcpelauncher;
 
@@ -54,8 +50,19 @@ const InputStream = java.io.InputStream;
 //file
 const BufferedImage = java.awt.image.BufferedImage;
 
-//------------------------------------------------------------------------------
-
+/*
+ * Smart_Moving_1.0_Alpha.js
+ * 사용언어: Java script 「ModPE」
+ * 작성자: PlanP, KD
+ * 작성일: 2015. 08. 03
+ * 최근 수정자: KD
+ * 수정일: 2015. 08. 13
+ * 수정사유: 코딩 컨벤션 수정
+ * Mine Craft 유명 모드 「Smart Moving」의 ModPE 버전입니다.
+ */
+ 
+// World에 접속하였을때 호출되는
+// ModPE에서 기본 제공하는 콜벡 메서드입니다.
 function newLevel ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -74,6 +81,8 @@ function newLevel ()
     }));
 }
 
+// World에 접속중 1초에 20번 호출되는
+// ModPE에서 기본 제공하는 콜벡 메서드입니다.
 function modTick ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -93,6 +102,9 @@ function modTick ()
     }));
 }
 
+
+// World의 접속이 종료될때 호출되는
+// ModPE에서 기본 제공하는 콜벡 메서드 입니다.
 function leaveGame ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -110,8 +122,7 @@ function leaveGame ()
     }));
 }
 
-//------------------------------------------------------------------------------
-
+// Smart Moving의 구조체 입니다.
 var SM = {
     Window :
     {
@@ -143,20 +154,24 @@ var SM = {
 		}
 	},
 
+    Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
+	// Script가 적용 되었을때 호출 됩니다.
     init : function ()
     {
-		SM.Object.EnergyBar = SM.GUI.EnergyBar();
+        SM.Object.EnergyBar = SM.GUI.EnergyBar();
         SM.Object.JumpBar = SM.GUI.JumpBar();
-			
+            
         SM.Object.Option = SM.GUI.Option();
-		//오류남
-		//SM.Object.Option.init();
+        //오류남
+        SM.Object.Option.init();
     },
 
+	// World에 접속중 1초에 20번 호출되는
+    // Smart Moving에서 제공하는 콜벡 메서드입니다.
     run : function ()
     {
-		SM.GUI.run();
-		
+        SM.GUI.run();
+        
         if (SM.Mode.isJump)
         {
             if (SM.Object.JumpBar.getValue() < 20)
@@ -168,24 +183,27 @@ var SM = {
 
     GUI :
     {
+		// Smart Moving의 GUI의 초기화를 위하여 제공하는 메서드입니다.
         init : function ()
         {
-			if (SM.Mode.Run)
-			{
-				SM.Object.EnergyBar.show();
-				SM.Object.JumpBar.show();
+            if (SM.Mode.Run)
+            {
+                SM.Object.EnergyBar.show();
+                SM.Object.JumpBar.show();
 
-            	SM.Window.MultiButton = SM.GUI.MultiButton();
-			}
-			
+                SM.Window.MultiButton = SM.GUI.MultiButton();
+            }
+            
             SM.Window.OptionBotton = SM.GUI.OptionBotton();
         },
-		
-		run : function ()
-		{
-			
-		},
         
+		// Smart Moving의 GUI의 변경을 위하여 제공하는 메서드입니다.
+        run : function ()
+        {
+            
+        },
+        
+		// Smart Moving의 GUI의 파괴을 위하여 제공하는 메서드입니다.
         destroy : function ()
         {
             if (SM.Window.OptionBotton != null)
@@ -466,8 +484,7 @@ var SM = {
     }
 };
 
-//------------------------------------------------------------------------------
-
+// MineCraft PE의 GUI 제공을 위한 구조체입니다.
 var MC =
 {
     ctx : null,
