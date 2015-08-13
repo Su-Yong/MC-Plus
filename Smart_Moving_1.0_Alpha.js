@@ -9,8 +9,6 @@
 // 56 139 18 18 gui
 // 82 135 18 18 gui
 
-/Up
-
 //Import
 
 const bl = net.zhuoweizhang.mcpelauncher;
@@ -89,7 +87,6 @@ function modTick ()
             {
                 if (SM.Mode.Run)
                     SM.run();
-				//clientMessage(SM.Mode.Run);
             }
             catch (e)
             {
@@ -107,7 +104,7 @@ function leaveGame ()
         {
             try
             {
-                SM.GUI.destory();
+                SM.GUI.destroy();
             }
             catch (e) {
                 MC.errorAlert(e);
@@ -140,7 +137,12 @@ var SM = {
 	
 	Button :
 	{
-		MultiButton : 0
+		Multi :
+		{
+			Nomal : 0,
+			Up : 0,
+			Down : 0
+		}
 	},
 
     init : function ()
@@ -149,7 +151,8 @@ var SM = {
         SM.Object.JumpBar = SM.GUI.JumpBar();
 			
         SM.Object.Option = SM.GUI.Option();
-		SM.Object.Option.init();
+		//오류남
+		//SM.Object.Option.init();
     },
 
     run : function ()
@@ -209,7 +212,7 @@ var SM = {
             var none1 = new TextView(MC.ctx);
             var none2 = new TextView(MC.ctx);
             
-            var Count = 0;
+            var count = 0;
             
             //layout.setClickable(true);
             button.setOnTouchListener (new OnTouchListener (
@@ -220,9 +223,11 @@ var SM = {
                     {
                         view.setImageBitmap(MC.Bitmap.LayerBitmap());
                         
-                        Count++;
+						SM.Button.Nomal = 1;
+						
+                        count++;
 						                 
-				        if(Count>=2)
+				        if(count>=2)
 						{
 	                        buttonUp.setVisibility(VISIBLE);
 	                        buttonDown.setVisibility(VISIBLE);
@@ -242,6 +247,8 @@ var SM = {
                     }
                     if (event.getAction() == MotionEvent.ACTION_UP)
                     {
+						SM.Button.Nomal = 0;
+						
                         view.setImageBitmap(null);
 						                 
 		                buttonUp.setVisibility(GONE);
@@ -259,10 +266,10 @@ var SM = {
 	        none2.setVisibility(GONE);
 					     
             layout.setOrientation(1);
-            layout.setGravity(Gravity.CENTER|Gravity.CENTER);
-            layout.addView(buttonUp, MC.dp(35), MC.dp(35));
-            layout.addView(none1, MC.dp(5), MC.dp(5));
+            layout.setGravity(Gravity.CENTER | Gravity.CENTER);
             layout.addView(button, MC.dp(40), MC.dp(40));
+			layout.addView(buttonUp, MC.dp(35), MC.dp(35));
+            layout.addView(none1, MC.dp(5), MC.dp(5));
             layout.addView(none2, MC.dp(5), MC.dp(5));
             layout.addView(buttonDown, MC.dp(35), MC.dp(35));
             
@@ -286,7 +293,8 @@ var SM = {
             return bar;
         },
 
-        JumpBar: function () {
+        JumpBar : function () 
+		{
             var bar = new MC.ImageBar(SM.GUI.Image.FullJump(), SM.GUI.Image.HalfJump(),
 									  -MC.dp(80), MC.dp(50), false);
             bar.setValue(0);
