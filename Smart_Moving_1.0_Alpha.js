@@ -229,7 +229,6 @@ var SM = {
 	                        buttonDown.setVisibility(VISIBLE);
 						    none1.setVisibility(VISIBLE);
 							none2.setVisibility(VISIBLE);
-		                    //window.update(MC.dp(20), MC.dp(60), MC.dp(40), MC.dp(40), false);
 			            }
 						else
                         new java.lang.Thread (
