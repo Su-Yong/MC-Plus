@@ -132,7 +132,7 @@ var SM = {
     Mode :
     {
         isJump : false,
-        Run : false
+        Run : true
     },
 	
 	Button :
@@ -157,6 +157,8 @@ var SM = {
 
     run : function ()
     {
+		SM.GUI.run();
+		
         if (SM.Mode.isJump)
         {
             if (SM.Object.JumpBar.getValue() < 20)
@@ -180,6 +182,11 @@ var SM = {
 			
             SM.Window.OptionBotton = SM.GUI.OptionBotton();
         },
+		
+		run : function ()
+		{
+			
+		},
         
         destroy : function ()
         {
