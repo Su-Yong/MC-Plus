@@ -148,13 +148,13 @@ var SM = {
 	{
 		Multi :
 		{
-			Nomal : 0,
-			Up : 0,
-			Down : 0
+			Normal : false,
+			Up : false,
+			Down : false
 		}
 	},
 
-    Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
+    // Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
 	// Script가 적용 되었을때 호출 됩니다.
     init : function ()
     {
@@ -232,12 +232,12 @@ var SM = {
             var buttonUp = new MC.GUIButton(MC.Bitmap.GUIButton.FlyUpDrawable());
             var buttonDown = new MC.GUIButton(MC.Bitmap.GUIButton.FlyDownDrawable());
             
-            var none1 = new TextView(MC.ctx);
-            var none2 = new TextView(MC.ctx);
+            var m_ml1 = new LinearLayout(MC.ctx);
+            var m_ml2 = new LinearLayout(MC.ctx);
             
             var count = 0;
+			var m_isDouble = false;
             
-            //layout.setClickable(true);
             button.setOnTouchListener (new OnTouchListener (
             {
                 onTouch : function (view, event)
@@ -246,7 +246,7 @@ var SM = {
                     {
                         view.setImageBitmap(MC.Bitmap.LayerBitmap());
                         
-						SM.Button.Nomal = 1;
+						SM.Button.Multi.Normal = true;
 						
                         count++;
 						                 
@@ -254,9 +254,8 @@ var SM = {
 						{
 	                        buttonUp.setVisibility(VISIBLE);
 	                        buttonDown.setVisibility(VISIBLE);
-						    none1.setVisibility(VISIBLE);
-							none2.setVisibility(VISIBLE);
-		                    //window.update(MC.dp(20), MC.dp(60), MC.dp(40), MC.dp(40), false);
+							
+							m_isDouble = true;
 			            }
 						else
                         new java.lang.Thread (
@@ -268,16 +267,44 @@ var SM = {
 		                    }
 						}).start();
                     }
-                    if (event.getAction() == MotionEvent.ACTION_UP)
+					else if (event.getAction() == MotionEvent.ACTION_MOVE)
+					{
+						if (m_isDouble)
+						{
+							var m_coordY = event.getRawY();
+							
+							if ((MC.HEIGHT - MC.dp(60)) < m_coordY)
+							{
+								SM.Button.Multi.Normal = false;
+								SM.Button.Multi.Up = false;
+								SM.Button.Multi.Down = true;
+							}
+							else if ((MC.HEIGHT - MC.dp(100)) > m_coordY)
+							{
+								SM.Button.Multi.Normal = false;
+								SM.Button.Multi.Up = true;
+								SM.Button.Multi.Down = false;
+							}
+							else
+							{
+								SM.Button.Multi.Normal = true;
+								SM.Button.Multi.Up = false;
+								SM.Button.Multi.Down = false;
+							}
+						}
+					}
+                    else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
-						SM.Button.Nomal = 0;
+						m_isDouble = false;
+						
+ 						SM.Button.Multi.Normal = false;
+						SM.Button.Multi.Up = false;
+						SM.Button.Multi.Down = false;
 						
                         view.setImageBitmap(null);
 						                 
 		                buttonUp.setVisibility(GONE);
 		                buttonDown.setVisibility(GONE);
-		                none1.setVisibility(GONE);
-		                none2.setVisibility(GONE);
                     }
                     return false;
                 }
@@ -285,16 +312,19 @@ var SM = {
             
             buttonUp.setVisibility(GONE);
 			buttonDown.setVisibility(GONE);
-		    none1.setVisibility(GONE);
-	        none2.setVisibility(GONE);
-					     
-            layout.setOrientation(1);
+		    
+			m_ml1.setGravity(Gravity.TOP | Gravity.CENTER);  
+			m_ml2.setGravity(Gravity.BOTTOM | Gravity.CENTER);  
+			
+			m_ml1.addView(buttonUp, MC.dp(35), MC.dp(35));
+            m_ml2.addView(buttonDown, MC.dp(35), MC.dp(35));
+			
+			layout.setOrientation(1);
             layout.setGravity(Gravity.CENTER | Gravity.CENTER);  
-			layout.addView(buttonUp, MC.dp(35), MC.dp(35));
-            layout.addView(none1, MC.dp(5), MC.dp(5));
-			layout.addView(button, MC.dp(40), MC.dp(40));
-            layout.addView(none2, MC.dp(5), MC.dp(5));
-            layout.addView(buttonDown, MC.dp(35), MC.dp(35));
+			
+			layout.addView(m_ml1, MC.dp(40), MC.dp(40));
+            layout.addView(button, MC.dp(40), MC.dp(40));
+            layout.addView(m_ml2, MC.dp(40), MC.dp(40));
             
             window.setContentView(layout);
             window.setBackgroundDrawable(null);
@@ -1209,7 +1239,12 @@ var MC =
         this.init = function ()
         {
             for (var i in keyCodeList)
-                eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
+			{
+				if (ModPE.readData(keyCodeList[i]) != "")
+                    eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
+				else
+					eval(variationList[i] + " = false;");
+			}
         };       
 	},
 	
