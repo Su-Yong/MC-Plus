@@ -6,9 +6,6 @@
 * Smart_Moving_1.0_Alpha.js
 */
 
-// 56 139 18 18 gui
-// 82 135 18 18 gui
-
 //Import
 
 const bl = net.zhuoweizhang.mcpelauncher;
