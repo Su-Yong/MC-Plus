@@ -9,6 +9,8 @@
 // 56 139 18 18 gui
 // 82 135 18 18 gui
 
+/Up
+
 //Import
 
 const bl = net.zhuoweizhang.mcpelauncher;
@@ -135,6 +137,11 @@ var SM = {
         isJump : false,
         Run : false
     },
+	
+	Button :
+	{
+		MultiButton : 0
+	},
 
     init : function ()
     {
@@ -1099,7 +1106,9 @@ var MC =
                 bool = false;
 					
 			eval(variation + "=" + bool + ";");
-					
+			
+			ModPE.saveData(keyCode, isCheck);
+			
 			var switch_ = new MC.Switch(bool);
             switch_.setOnClickListener (new OnClickListener (
             {
@@ -1171,9 +1180,8 @@ var MC =
         
         this.init = function ()
         {
-			if (variationList != null)
-                for (var i in keyCodeList)
-                   eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
+            for (var i in keyCodeList)
+                eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
         };       
 	},
 	
