@@ -129,6 +129,7 @@ var SM = {
     Mode :
     {
         isJump : false,
+		ChangeControl : false,
         Run : true
     },
 	
@@ -245,7 +246,7 @@ var SM = {
 		                    run : function ()
 				    		{
 					            java.lang.Thread.sleep(250);
-			                    Count = 0;
+			                    count = 0;
 		                    }
 						}).start();
                     }
@@ -353,11 +354,11 @@ var SM = {
             option.addText("게임");
             option.addSwitch("스마트무빙 사용", "enable_sm", "SM.Mode.Run", "SM.GUI.destroy(); SM.GUI.init();", "SM.GUI.destroy(); SM.GUI.init();");
             
-            option.addText("리페");
-            option.addText("진짜");
-            option.addText("완전");
-            option.addSwitch("멍청이", "enable_sm", "SM.Mode.Run", "", "");
-
+			option.addSlot(MC.Bitmap.Option.GameBitmap());
+			
+            option.addText("컨트롤");
+            option.addSwitch("컨트롤 방식 변경", "change_control", "SM.Mode.ChangeControl", "", "");
+            
             option.end();
             
             return option;
@@ -1172,6 +1173,7 @@ var MC =
         
         this.show = function ()
         {
+            option = new PopupWindow(MC.ctx);
             option.setContentView(layout_main);
             option.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
             option.setWidth(MC.WIDTH);
@@ -1184,7 +1186,7 @@ var MC =
         this.destroy = function ()
         {
 			option.dismiss();
-            //option = null;
+            option = null;
         };
         
         this.init = function ()
