@@ -211,7 +211,6 @@ var SM = {
             
             var count = 0;
             
-            //layout.setClickable(true);
             button.setOnTouchListener (new OnTouchListener (
             {
                 onTouch : function (view, event)
