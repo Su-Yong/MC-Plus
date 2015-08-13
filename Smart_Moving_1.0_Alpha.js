@@ -218,6 +218,7 @@ var SM = {
             
             var count = 0;
             
+            //layout.setClickable(true);
             button.setOnTouchListener (new OnTouchListener (
             {
                 onTouch : function (view, event)
@@ -236,6 +237,7 @@ var SM = {
 	                        buttonDown.setVisibility(VISIBLE);
 						    none1.setVisibility(VISIBLE);
 							none2.setVisibility(VISIBLE);
+		                    //window.update(MC.dp(20), MC.dp(60), MC.dp(40), MC.dp(40), false);
 			            }
 						else
                         new java.lang.Thread (
@@ -268,10 +270,10 @@ var SM = {
 	        none2.setVisibility(GONE);
 					     
             layout.setOrientation(1);
-            layout.setGravity(Gravity.CENTER | Gravity.CENTER);
-            layout.addView(button, MC.dp(40), MC.dp(40));
+            layout.setGravity(Gravity.CENTER | Gravity.CENTER);  
 			layout.addView(buttonUp, MC.dp(35), MC.dp(35));
             layout.addView(none1, MC.dp(5), MC.dp(5));
+			layout.addView(button, MC.dp(40), MC.dp(40));
             layout.addView(none2, MC.dp(5), MC.dp(5));
             layout.addView(buttonDown, MC.dp(35), MC.dp(35));
             
@@ -1127,14 +1129,14 @@ var MC =
                     if (view.isChecked())
 					{
 						view.setBackgroundDrawable(MC.Bitmap.SwitchOnDrawable());
-						eval(onClickFunc+"");
 						eval(variation + " = true;");
+						eval(onClickFunc+"");
 					}
                     if (!view.isChecked())
 					{
 						view.setBackgroundDrawable(MC.Bitmap.SwitchOffDrawable());
-						eval(offClickFunc+"");
 						eval(variation + " = false;");
+						eval(onClickFunc+"");
 					}
 
                     ModPE.saveData(keyCode, view.isChecked());
