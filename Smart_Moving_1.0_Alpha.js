@@ -129,7 +129,7 @@ var SM = {
     Mode :
     {
         isJump : false,
-        Run : false
+        Run : true
     },
 	
 	Button :
@@ -154,6 +154,8 @@ var SM = {
 
     run : function ()
     {
+		SM.GUI.run();
+		
         if (SM.Mode.isJump)
         {
             if (SM.Object.JumpBar.getValue() < 20)
@@ -177,6 +179,11 @@ var SM = {
 			
             SM.Window.OptionBotton = SM.GUI.OptionBotton();
         },
+		
+		run : function ()
+		{
+			
+		},
         
         destroy : function ()
         {
@@ -342,7 +349,7 @@ var SM = {
             option.addSlot(MC.Bitmap.Option.NormalBitmap());
 			
             option.addText("게임");
-            option.addSwitch("스마트무빙 사용", "enable_sm", "SM.Mode.Run", "", "");
+            option.addSwitch("스마트무빙 사용", "enable_sm", "SM.Mode.Run", "SM.GUI.destroy(); SM.GUI.init();", "SM.GUI.destroy(); SM.GUI.init();");
             
             option.addText("리페");
             option.addText("진짜");
@@ -1174,11 +1181,8 @@ var MC =
         
         this.destroy = function ()
         {
-			if (option != null)
-			{
-				option.dismiss();
-                option = null;
-			}
+			option.dismiss();
+            //option = null;
         };
         
         this.init = function ()
@@ -1255,7 +1259,7 @@ var MC =
         this.destroy = function ()
         {
             window.dismiss();
-            window = null;
+            //window = null;
         };
     }
 };
