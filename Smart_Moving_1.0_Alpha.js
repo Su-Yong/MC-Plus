@@ -1,9 +1,3 @@
-
-/*
- * Copyright 2015. PlanP, KD
- * All rights reserved.
- */
-
 const bl = net.zhuoweizhang.mcpelauncher;
 
 const Button = android.widget.Button;
@@ -50,19 +44,16 @@ const InputStream = java.io.InputStream;
 //file
 const BufferedImage = java.awt.image.BufferedImage;
 
-/*
- * Smart_Moving_1.0_Alpha.js
- * 사용언어: Java script 「ModPE」
- * 작성자: PlanP, KD
- * 작성일: 2015. 08. 03
- * 최근 수정자: PlanP
- * 수정일: 2015. 08. 13
- * 수정사유: 버그수정, 옵션로드관련수정, 멀티버튼수정
- * Mine Craft 유명 모드 「Smart Moving」의 ModPE 버전입니다.
+/**
+ * (c) 2015 PlanP, KD
+ * 
+ * @author KD, planP
+ * @since 08.03.2015
  */
  
- //World를 클릭하면 호출되는
- //ModPE에서 기본 제공하는 콜백 메소드입니다.
+ /**
+  * World를 클릭하면 최초 한번 호출되는 콜백 메소드입니다.
+  */
  function selectLevelHook ()
  {
 	 MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -82,8 +73,9 @@ const BufferedImage = java.awt.image.BufferedImage;
     }));
  }
  
-// World에 접속하였을때 호출되는
-// ModPE에서 기본 제공하는 콜벡 메서드입니다.
+/**
+ * World에 접속하였을때 호출되는 ModPE에서 기본 제공하는 콜벡 메서드입니다.
+ */
 function newLevel ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -102,8 +94,9 @@ function newLevel ()
     }));
 }
 
-// World에 접속중 1초에 20번 호출되는
-// ModPE에서 기본 제공하는 콜벡 메서드입니다.
+/**
+ * World에 접속중 1초에 20번 호출되는 ModPE에서 기본 제공하는 콜벡 메서드입니다.
+ */
 function modTick ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -124,8 +117,9 @@ function modTick ()
 }
 
 
-// World의 접속이 종료될때 호출되는
-// ModPE에서 기본 제공하는 콜벡 메서드 입니다.
+/**
+ * World의 접속이 종료될때 호출되는 ModPE에서 기본 제공하는 콜벡 메서드 입니다.
+ */
 function leaveGame ()
 {
     MC.ctx.runOnUiThread (new java.lang.Runnable (
@@ -143,7 +137,9 @@ function leaveGame ()
     }));
 }
 
-// Smart Moving의 구조체 입니다.
+/**
+ * Smart Moving의 구조체 입니다.
+ */
 var SM = {
 	World : 0,
 	
@@ -177,8 +173,10 @@ var SM = {
 		}
 	},
 
-    // Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
-	// Script가 적용 되었을때 호출 됩니다.
+    /*
+	 * Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
+	 * Script가 적용 되었을때 호출 됩니다.
+	 */ 
     init : function ()
     {
         SM.Object.EnergyBar = SM.GUI.EnergyBar();
@@ -189,8 +187,10 @@ var SM = {
         SM.Object.Option.init();
     },
 
-	// World에 접속중 1초에 20번 호출되는
-    // Smart Moving에서 제공하는 콜벡 메서드입니다.
+	/**
+	 * World에 접속중 1초에 20번 호출되는
+     * Smart Moving에서 제공하는 콜벡 메서드입니다.
+	 */
     run : function ()
     {
         SM.GUI.run();
@@ -206,7 +206,9 @@ var SM = {
 
     GUI :
     {
-		// Smart Moving의 GUI의 초기화를 위하여 제공하는 메서드입니다.
+		/**
+		 * Smart Moving의 GUI의 초기화를 위하여 제공하는 콜백 메서드입니다.
+		 */
         init : function ()
         {
             if (SM.Mode.Run)
@@ -220,13 +222,17 @@ var SM = {
             SM.Window.OptionBotton = SM.GUI.OptionBotton();
         },
         
-		// Smart Moving의 GUI의 변경을 위하여 제공하는 메서드입니다.
+		/**
+		 * Smart Moving의 GUI의 변경을 위하여 제공하는 콜백 메서드입니다.
+		 */
         run : function ()
         {
             
         },
         
-		// Smart Moving의 GUI의 파괴을 위하여 제공하는 메서드입니다.
+		/**
+		 * Smart Moving의 GUI의 파괴을 위하여 제공하는 콜백 메서드입니다.
+		 */
         destroy : function ()
         {
             if (SM.Window.OptionBotton != null)
@@ -539,7 +545,9 @@ var SM = {
     }
 };
 
-// MineCraft PE의 GUI 제공을 위한 구조체입니다.
+/**
+ * MineCraft PE의 GUI 제공을 위한 구조체입니다.
+ */
 var MC =
 {
     ctx : null,
