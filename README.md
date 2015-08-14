@@ -1,7 +1,7 @@
 # MC Plus
 This project give a special experience (about the MCPE) to you.  
 This project's compoenents are libMC, Smart Moving PE and PC crafting.  
-We hope you are Funny and satisfied.  
+We hope you are funny and satisfied.  
 Thank you!  
 
 ## Author
