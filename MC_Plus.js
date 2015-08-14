@@ -169,7 +169,10 @@ var SM = {
         {
             Normal : false,
             Up : false,
-            Down : false
+            Down : false,
+			
+			Count : 4,
+			TouchCount : 0
         }
     },
 
@@ -227,7 +230,10 @@ var SM = {
          */
         run : function ()
         {
-            
+            if (SM.Button.Multi.Count > 0)
+				SM.Button.Multi.Count--;
+			if (SM.Button.Multi.Count == 0)
+				SM.Button.Multi.TouchCount = 0;
         },
         
         /**
@@ -264,7 +270,6 @@ var SM = {
             var m_ml1 = new LinearLayout(MC.ctx);
             var m_ml2 = new LinearLayout(MC.ctx);
             
-            var count = 0;
             var m_isDouble = false;
             
             button.setOnTouchListener (new OnTouchListener (
@@ -277,9 +282,9 @@ var SM = {
                         
                         SM.Button.Multi.Normal = true;
                         
-                        count++;
+                        SM.Button.Multi.TouchCount++;
                                          
-                        if(count>=2)
+                        if(SM.Button.Multi.TouchCount>=2)
                         {
                             buttonUp.setVisibility(VISIBLE);
                             buttonDown.setVisibility(VISIBLE);
@@ -287,14 +292,7 @@ var SM = {
                             m_isDouble = true;
                         }
                         else
-                        new java.lang.Thread (
-                        {
-                            run : function ()
-                            {
-                                java.lang.Thread.sleep(250);
-                                count = 0;
-                            }
-                        }).start();
+                            SM.Button.Multi.Count = 4;
                     }
                     else if (event.getAction() == MotionEvent.ACTION_MOVE)
                     {
@@ -326,7 +324,7 @@ var SM = {
                     {
                         m_isDouble = false;
                         
-                         SM.Button.Multi.Normal = false;
+                        SM.Button.Multi.Normal = false;
                         SM.Button.Multi.Up = false;
                         SM.Button.Multi.Down = false;
                         
@@ -1093,7 +1091,9 @@ var MC =
         var tv_head = new Array();
 
         var slot = new Array();
-    
+		
+		var m_slot_margin = new Array();
+		
         title.setText("설정");
         title.setGravity(Gravity.CENTER | Gravity.CENTER);
 
@@ -1129,6 +1129,7 @@ var MC =
             
             var thisIndex = index;
             
+			m_slot_margin[index] = new LinearLayout(MC.ctx);
             slot[index] = new MC.ImageToggle(MC.ctx);
 
             slot[index].setOnClickListener (new OnClickListener (
@@ -1163,8 +1164,11 @@ var MC =
                 layout_list[index].setVisibility(VISIBLE);
                 layout_scr[index].setVisibility(VISIBLE);
             }
-            layout_left.addView(slot[index], MC.dp(55), MC.dp(55));
-
+			
+			m_slot_margin[index].setGravity(Gravity.CENTER | Gravity.CENTER);
+            m_slot_margin[index].addView(slot[index], MC.dp(55), MC.dp(55));
+			layout_left.addView(m_slot_margin[index], MC.dp(55), MC.dp(57.5));
+			
             layout_scr[index].addView(layout_list[index]);
             layout_main.addView(layout_scr[index], MC.WIDTH, MC.HEIGHT);
         };
