@@ -56,14 +56,14 @@ const BufferedImage = java.awt.image.BufferedImage;
   */
  function selectLevelHook ()
  {
-     MC.ctx.runOnUiThread (new java.lang.Runnable (
+	 MC.ctx.runOnUiThread (new java.lang.Runnable (
     {
         run : function ()
         {
             try
             {
-                if((SM.World++) == 0)
-                    SM.init();
+		        if((SM.World++) == 0)
+					SM.init();
             }
             catch (e)
             {
@@ -84,7 +84,7 @@ function newLevel ()
         {
             try
             {
-                SM.GUI.init();
+		        SM.GUI.init();
             }
             catch (e)
             {
@@ -141,8 +141,8 @@ function leaveGame ()
  * Smart Moving의 구조체 입니다.
  */
 var SM = {
-    World : 0,
-    
+	World : 0,
+	
     Window :
     {
         MultiButton : null,
@@ -153,30 +153,30 @@ var SM = {
     {
         EnergyBar : null,
         JumpBar : null,
-        Option : null
+		Option : null
     },
 
     Mode :
     {
         isJump : false,
-        ChangeControl : false,
+		ChangeControl : false,
         Run : true
     },
-    
-    Button :
-    {
-        Multi :
-        {
-            Normal : false,
-            Up : false,
-            Down : false
-        }
-    },
+	
+	Button :
+	{
+		Multi :
+		{
+			Normal : false,
+			Up : false,
+			Down : false
+		}
+	},
 
     /*
-     * Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
-     * Script가 적용 되었을때 호출 됩니다.
-     */ 
+	 * Smart Moving의 초기화를 위해서 제공하는 콜벡 메서드입니다.
+	 * Script가 적용 되었을때 호출 됩니다.
+	 */ 
     init : function ()
     {
         SM.Object.EnergyBar = SM.GUI.EnergyBar();
@@ -187,10 +187,10 @@ var SM = {
         SM.Object.Option.init();
     },
 
-    /**
-     * World에 접속중 1초에 20번 호출되는
+	/**
+	 * World에 접속중 1초에 20번 호출되는
      * Smart Moving에서 제공하는 콜벡 메서드입니다.
-     */
+	 */
     run : function ()
     {
         SM.GUI.run();
@@ -206,9 +206,9 @@ var SM = {
 
     GUI :
     {
-        /**
-         * Smart Moving의 GUI의 초기화를 위하여 제공하는 콜백 메서드입니다.
-         */
+		/**
+		 * Smart Moving의 GUI의 초기화를 위하여 제공하는 콜백 메서드입니다.
+		 */
         init : function ()
         {
             if (SM.Mode.Run)
@@ -222,17 +222,17 @@ var SM = {
             SM.Window.OptionBotton = SM.GUI.OptionBotton();
         },
         
-        /**
-         * Smart Moving의 GUI의 변경을 위하여 제공하는 콜백 메서드입니다.
-         */
+		/**
+		 * Smart Moving의 GUI의 변경을 위하여 제공하는 콜백 메서드입니다.
+		 */
         run : function ()
         {
             
         },
         
-        /**
-         * Smart Moving의 GUI의 파괴을 위하여 제공하는 콜백 메서드입니다.
-         */
+		/**
+		 * Smart Moving의 GUI의 파괴을 위하여 제공하는 콜백 메서드입니다.
+		 */
         destroy : function ()
         {
             if (SM.Window.OptionBotton != null)
@@ -240,13 +240,13 @@ var SM = {
                 SM.Window.OptionBotton.dismiss();
                 SM.Window.OptionBotton = null;
             }
-            if (SM.Window.MultiButton != null)
+	        if (SM.Window.MultiButton != null)
             {
                 SM.Window.MultiButton.dismiss();
                 SM.Window.MultiButton = null;
             }
-            
-            SM.Object.EnergyBar.destroy();
+			
+	        SM.Object.EnergyBar.destroy();
             SM.Object.JumpBar.destroy();
         },
         
@@ -265,7 +265,7 @@ var SM = {
             var m_ml2 = new LinearLayout(MC.ctx);
             
             var count = 0;
-            var m_isDouble = false;
+			var m_isDouble = false;
             
             button.setOnTouchListener (new OnTouchListener (
             {
@@ -275,83 +275,83 @@ var SM = {
                     {
                         view.setImageBitmap(MC.Bitmap.LayerBitmap());
                         
-                        SM.Button.Multi.Normal = true;
-                        
+						SM.Button.Multi.Normal = true;
+						
                         count++;
-                                         
-                        if(count>=2)
-                        {
-                            buttonUp.setVisibility(VISIBLE);
-                            buttonDown.setVisibility(VISIBLE);
-                            
-                            m_isDouble = true;
-                        }
-                        else
+						                 
+				        if(count>=2)
+						{
+	                        buttonUp.setVisibility(VISIBLE);
+	                        buttonDown.setVisibility(VISIBLE);
+							
+							m_isDouble = true;
+			            }
+						else
                         new java.lang.Thread (
-                        {
-                            run : function ()
-                            {
-                                java.lang.Thread.sleep(250);
-                                count = 0;
-                            }
-                        }).start();
+						{
+		                    run : function ()
+				    		{
+					            java.lang.Thread.sleep(250);
+			                    count = 0;
+		                    }
+						}).start();
                     }
-                    else if (event.getAction() == MotionEvent.ACTION_MOVE)
-                    {
-                        if (m_isDouble)
-                        {
-                            var m_coordY = event.getRawY();
-                            
-                            if ((MC.HEIGHT - MC.dp(55)) < m_coordY)
-                            {
-                                SM.Button.Multi.Normal = false;
-                                SM.Button.Multi.Up = false;
-                                SM.Button.Multi.Down = true;
-                            }
-                            else if ((MC.HEIGHT - MC.dp(105)) > m_coordY)
-                            {
-                                SM.Button.Multi.Normal = false;
-                                SM.Button.Multi.Up = true;
-                                SM.Button.Multi.Down = false;
-                            }
-                            else
-                            {
-                                SM.Button.Multi.Normal = true;
-                                SM.Button.Multi.Up = false;
-                                SM.Button.Multi.Down = false;
-                            }
-                        }
-                    }
+					else if (event.getAction() == MotionEvent.ACTION_MOVE)
+					{
+						if (m_isDouble)
+						{
+							var m_coordY = event.getRawY();
+							
+							if ((MC.HEIGHT - MC.dp(55)) < m_coordY)
+							{
+								SM.Button.Multi.Normal = false;
+								SM.Button.Multi.Up = false;
+								SM.Button.Multi.Down = true;
+							}
+							else if ((MC.HEIGHT - MC.dp(105)) > m_coordY)
+							{
+								SM.Button.Multi.Normal = false;
+								SM.Button.Multi.Up = true;
+								SM.Button.Multi.Down = false;
+							}
+							else
+							{
+								SM.Button.Multi.Normal = true;
+								SM.Button.Multi.Up = false;
+								SM.Button.Multi.Down = false;
+							}
+						}
+					}
                     else if (event.getAction() == MotionEvent.ACTION_UP)
                     {
-                        m_isDouble = false;
-                        
-                         SM.Button.Multi.Normal = false;
-                        SM.Button.Multi.Up = false;
-                        SM.Button.Multi.Down = false;
-                        
+						m_isDouble = false;
+						
+ 						SM.Button.Multi.Normal = false;
+						SM.Button.Multi.Up = false;
+						SM.Button.Multi.Down = false;
+						
                         view.setImageBitmap(null);
-                                         
-                        buttonUp.setVisibility(GONE);
-                        buttonDown.setVisibility(GONE);
+						                 
+		                buttonUp.setVisibility(GONE);
+		                buttonDown.setVisibility(GONE);
                     }
                     return false;
                 }
             }));
             
             buttonUp.setVisibility(GONE);
-            buttonDown.setVisibility(GONE);
-            
-            m_ml1.setGravity(Gravity.TOP | Gravity.CENTER);  
-            m_ml2.setGravity(Gravity.BOTTOM | Gravity.CENTER);  
-            
-            m_ml1.addView(buttonUp, MC.dp(35), MC.dp(35));
+			buttonDown.setVisibility(GONE);
+		    
+			m_ml1.setGravity(Gravity.TOP | Gravity.CENTER);  
+			m_ml2.setGravity(Gravity.BOTTOM | Gravity.CENTER);  
+			
+			m_ml1.addView(buttonUp, MC.dp(35), MC.dp(35));
             m_ml2.addView(buttonDown, MC.dp(35), MC.dp(35));
-            
-            layout.setOrientation(1);
+			
+			layout.setOrientation(1);
             layout.setGravity(Gravity.CENTER | Gravity.CENTER);  
-            
-            layout.addView(m_ml1, MC.dp(40), MC.dp(50));
+			
+			layout.addView(m_ml1, MC.dp(40), MC.dp(50));
             layout.addView(button, MC.dp(40), MC.dp(40));
             layout.addView(m_ml2, MC.dp(40), MC.dp(50));
             
@@ -365,20 +365,20 @@ var SM = {
 
             return window;
         },
-        
+		
         EnergyBar : function ()
         {
             var bar = new MC.ImageBar(SM.GUI.Image.FullEnergy(), SM.GUI.Image.HalfEnergy(),
-                                      MC.dp(80), MC.dp(50), true);
+									  MC.dp(80), MC.dp(50), true);
             bar.setValue(0);
 
             return bar;
         },
 
         JumpBar : function () 
-        {
+		{
             var bar = new MC.ImageBar(SM.GUI.Image.FullJump(), SM.GUI.Image.HalfJump(),
-                                      -MC.dp(80), MC.dp(50), false);
+									  -MC.dp(80), MC.dp(50), false);
             bar.setValue(0);
 
             return bar;
@@ -417,7 +417,7 @@ var SM = {
                                   Gravity.RIGHT | Gravity.TOP,
                                   MC.dp(38), MC.dp(2));
 
-            return window;
+			return window;
         },
 
         Option : function ()
@@ -427,19 +427,19 @@ var SM = {
             option.setTitle("설정");
 
             option.addSlot(MC.Bitmap.Option.NormalBitmap());
-            
+			
             option.addText("게임");
             option.addSwitch("스마트무빙 사용", "enable_sm", "SM.Mode.Run", "SM.GUI.destroy(); SM.GUI.init();", "SM.GUI.destroy(); SM.GUI.init();");
             
-            option.addSlot(MC.Bitmap.Option.GameBitmap());
-            
+			option.addSlot(MC.Bitmap.Option.GameBitmap());
+			
             option.addText("컨트롤");
             option.addSwitch("컨트롤 방식 변경", "change_control", "SM.Mode.ChangeControl", "", "");
             
             option.end();
             
-            option.init();
-            
+			option.init();
+			
             return option;
         },
 
@@ -551,7 +551,7 @@ var SM = {
 var MC =
 {
     ctx : null,
-    
+	
     WIDTH : null,
     HEIGHT : null,
 
@@ -559,11 +559,11 @@ var MC =
 
     init : function ()
     {
-        MC.ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
-        
-        MC.WIDTH = MC.ctx.getScreenWidth();
+		MC.ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
+		
+		MC.WIDTH = MC.ctx.getScreenWidth();
         MC.HEIGHT = MC.ctx.getScreenHeight();
-        
+		
         MC.ctx.setTheme(android.R.style.Theme_Holo_Light);
 
         MC.ctx.runOnUiThread(new java.lang.Runnable(
@@ -592,7 +592,7 @@ var MC =
     onSizePatch : function (bit, size)
     {
         var lastBit = Bitmap.createBitmap(bit.getWidth() + MC.dp(size), bit.getHeight() + MC.dp(size),
-                                          Bitmap.Config.ARGB_8888);
+		                                  Bitmap.Config.ARGB_8888);
         var canvas = new Canvas(lastBit);
         canvas.drawBitmap(bit, MC.dp(size / 2), MC.dp(size / 2), null);
 
@@ -916,7 +916,7 @@ var MC =
             return bitmap;
         }
     },
-    
+	
     Button : function ()
     {
         var bt = new Button(MC.ctx);
@@ -1093,7 +1093,7 @@ var MC =
         var tv_head = new Array();
 
         var slot = new Array();
-    
+	
         title.setText("설정");
         title.setGravity(Gravity.CENTER | Gravity.CENTER);
 
@@ -1191,37 +1191,37 @@ var MC =
             tv.setTextColor(Color.parseColor("#FFB5B5B5"));
 
             var isCheck = ModPE.readData(keyCode);
-            var bool;
-            
+			var bool;
+			
             if (isCheck == "true")
                 bool = true;
             else
                 bool = false;
-                    
-            eval(variation + "=" + bool + ";");
-            
-            ModPE.saveData(keyCode, isCheck);
-            
-            var switch_ = new MC.Switch(bool);
+					
+			eval(variation + "=" + bool + ";");
+			
+			ModPE.saveData(keyCode, isCheck);
+			
+			var switch_ = new MC.Switch(bool);
             switch_.setOnClickListener (new OnClickListener (
             {
                 onClick : function (view)
                 {
                     if (view.isChecked())
-                    {
-                        view.setBackgroundDrawable(MC.Bitmap.SwitchOnDrawable());
-                        eval(variation + " = true;");
-                        eval(onClickFunc+"");
-                    }
+					{
+						view.setBackgroundDrawable(MC.Bitmap.SwitchOnDrawable());
+						eval(variation + " = true;");
+						eval(onClickFunc+"");
+					}
                     if (!view.isChecked())
-                    {
-                        view.setBackgroundDrawable(MC.Bitmap.SwitchOffDrawable());
-                        eval(variation + " = false;");
-                        eval(onClickFunc+"");
-                    }
+					{
+						view.setBackgroundDrawable(MC.Bitmap.SwitchOffDrawable());
+						eval(variation + " = false;");
+						eval(onClickFunc+"");
+					}
 
                     ModPE.saveData(keyCode, view.isChecked());
-        
+		
                 }
             }));
 
@@ -1265,31 +1265,31 @@ var MC =
         
         this.destroy = function ()
         {
-            option.dismiss();
+			option.dismiss();
             option = null;
         };
         
         this.init = function ()
         {
             for (var i in keyCodeList)
-            {
-                if (ModPE.readData(keyCodeList[i]) != "")
+			{
+				if (ModPE.readData(keyCodeList[i]) != "")
                     eval(variationList[i] + " = " + ModPE.readData(keyCodeList[i]) + ";");
-                else
-                    eval(variationList[i] + " = false;");
-            }
+				else
+					eval(variationList[i] + " = false;");
+			}
         };       
-    },
-    
-    ImageBar : function (fullImage, halfImage,
-                         widthMargin, heightMargin, isReverse)
+	},
+	
+	ImageBar : function (fullImage, halfImage,
+	                     widthMargin, heightMargin, isReverse)
     {
         var window = new PopupWindow(MC.ctx);      
         var layout_main = new LinearLayout(MC.ctx);
         
         var image = new Array();
         var _value = 0;
-        
+		
         for (var i = 0; i < 10; i++)
         {
             if (!isReverse)
@@ -1308,7 +1308,7 @@ var MC =
         {
             var last = 0;
             _value = value;
-            
+			
             for (var i = 0; i < 10; i++)
             {
                 if (i < _value/2)
@@ -1323,26 +1323,26 @@ var MC =
             if (_value%2 == 1 && _value != 0)
                 image[last-1].setImageBitmap(halfImage);
         };
-        
-        this.getValue = function ()
+		
+		this.getValue = function ()
         {
             return _value;
         };
         
         this.getWindow = function ()
-        {
-            return window;
-        };
-        
-        this.show = function ()
+		{
+			return window;
+		};
+		
+		this.show = function ()
         {
             window.setContentView(layout_main);
             window.setBackgroundDrawable(null);
             window.setWidth(MC.dp(150));
             window.setHeight(MC.dp(15));
             window.showAtLocation(MC.ctx.getWindow().getDecorView(),
-                                  Gravity.CENTER | Gravity.BOTTOM,
-                                   widthMargin, heightMargin);
+		                          Gravity.CENTER | Gravity.BOTTOM,
+		     					  widthMargin, heightMargin);
         };
         
         this.destroy = function ()
